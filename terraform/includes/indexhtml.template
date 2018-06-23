@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Disco time</title>
+        <meta charset='utf8'/>
+        <style>
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    }
+table {
+    width: 100%;
+    min-height: 100%;
+    border-collapse: collapse;
+    }
+        </style>
+<script>
+document.write('<table>');
+for (i=1;i<=10;i=i+1) {
+    var s;
+    document.write("<tr>");
+    for (j=1;j<=10;j=j+1) {
+        document.write("<td class='r" + ((i+j)%3) + "'> </td>");
+    }
+    document.write("</tr>");
+}
+document.write("</table>");
+var sty = document.getElementsByTagName('style')[0];
+var styli = [
+    document.createTextNode('.r1 {background-color: red;} .r2, .r0 {background-color: yellow;}'),
+    document.createTextNode('.r1 {background-color: yellow;} .r2, .r0 {background-color: red;}'),
+]
+sty.appendChild(styli[0]);
+function revert() {
+    styli = styli.reverse();
+    sty.replaceChild(styli[0],styli[1]);
+}
+setInterval(revert, 1500);
+</script>
+    </head>
+    <body>
+    </body>
+</html>

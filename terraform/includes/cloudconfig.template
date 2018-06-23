@@ -1,0 +1,22 @@
+#cloud-config
+write_files:
+- encoding: b64
+  content: "${base64encode(nginxconf)}"
+  owner: root:root
+  path: /root/docker-nginx/conf/site.conf
+- encoding: b64
+  content: "${base64encode(indexhtml)}"
+  owner: root:root
+  path: /root/docker-nginx/content/index.html
+- content: |
+    FROM nginx
+    RUN rm /etc/nginx/conf.d/default.conf
+    COPY content /usr/share/nginx/html
+    COPY conf /etc/nginx/conf.d
+  path: /root/docker-nginx/Dockerfile
+runcmd:
+- apt-get update
+- curl -fsSL https://get.docker.com/ | sh
+- curl -fsSL https://get.docker.com/gpg | sudo apt-key add -
+- docker build -t simple-nginx /root/docker-nginx/
+- docker run --name simple-server -p 80:80 -d simple-nginx
